@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://10.140.0.3:5432/iobound
-    username: kiseok
-    password: nks8981
+    url: jdbc:postgresql://10.140.0.3:5432/postgresql
+    username: postgresql
+    password: postgrespassword
   jpa:
     show-sql: true
     hibernate:
