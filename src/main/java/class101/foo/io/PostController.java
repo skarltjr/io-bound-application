@@ -26,8 +26,13 @@ public class PostController {
     public Page<Post> getPostList(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return postRepository.findAll(pageable);
     }
+
     // 3. 글 번호로 조회
-    
+    @GetMapping("/post/{id}")
+    public Post getPostById(@PathVariable Long id) {
+        return postRepository.findById(id).get();
+    }
+
     // 4. 글 내용으로 검색 -> 해당 내용이 포함된 모든 글
 
 }
