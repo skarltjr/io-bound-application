@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -19,6 +20,7 @@ public class PostController {
     private final PostRepository postRepository;
     private final Producer producer;
     private final ObjectMapper objectMapper;
+    private final PostCacheService postCacheService;
 
     // 1. 글을 작성한다.
     @PostMapping("/post")
@@ -30,7 +32,11 @@ public class PostController {
     // 2 글 목록을 페이징하여 반환
     @GetMapping("/posts")
     public Page<Post> getPostList(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return postRepository.findAll(pageable);
+        if (pageable.getPageNumber() == 0) {
+            return postCacheService.getFirstPostPage();
+        } else {
+            return postRepository.findAll(pageable);
+        }
     }
 
     // 3. 글 번호로 조회
